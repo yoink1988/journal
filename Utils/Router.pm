@@ -10,15 +10,18 @@ use vars qw(%in);
 sub selectPage
 {
 	my ($self) = shift;
+# 	print Dumper( %ENV->{'REQUEST_METHOD'});   
+#    print '<pre>'.Dumper($self->{'request'}).'</pre>';
+    
 #	print '<pre>'.Dumper($self->{'request'}).'</pre>';
 	my $page;
-	if(!$self->{'request'}->{'page'}) 
+	if(!$self->{'request'}) 
 		{
 			$page = 'home';
 		}
-		else
+		if($self->{'request'} eq 'page=register')
 		{
-			$page = $self->{'request'}->{'page'};
+			$page = 'Register';
 		}
 	return $page;
 }

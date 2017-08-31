@@ -22,7 +22,7 @@ sub run
 	foreach my $value (@data)
 	{
 		
-		 %placeholders->{'LANG_articles'}.='<li>'.$value->{'id'}.'</li>'.'<li>'.$value->{'tittle'}.'</li>';
+		 %placeholders->{'LANG_articles'}.='<li>'.$value->{'title'}.'</li>'.'<li>'.$value->{'body'}.'</li>';
 	}
 	
 	%placeholders->{'LANG_articles'}.='</ol></div>';

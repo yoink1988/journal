@@ -5,39 +5,88 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-sub select($)
-{
-	my ($self) = shift;
-	my $query = $_[0];
-	my $dbh = $self->connect();
-	my $sth = $dbh->prepare($query);
-	$sth->execute();
-	my @res;
-	while (my $row = $sth->fetchrow_hashref())
-    {
-        push(@res, $row);
-    }
-    $sth->finish();
-    $dbh->disconnect();
-	return \@res;
-}
-
-sub print
-{
-	my ($self) = shift;
-	print 'hello';
-}
-
-sub connect
-{
-	my ($self) = shift;
-	my $dbh = DBI->connect($self->{'Driver'},$self->{'user'},$self->{'password'});
-	return $dbh;
-}
-
 sub new
 {
     my $class = ref($_[0])||$_[0];
-    return bless {'Driver' => 'DBI:mysql:journal:localhost','user' => 'root','password' => ''}; $class;
+    return bless {}, $class;
 }
+
+sub connectDb
+{
+    my $dsn ="DBI:mysql:user9";
+    my $user = "user9";
+    my $pass = "tuser9";
+    my $dbh = DBI->connect($dsn, $user, $pass)
+        or die "Error connecting to DB!";
+    return $dbh;
+}
+
+sub select
+{
+    my($self, $query)=@_;
+    my $sth = $self->connectDb()->prepare($query);
+    $sth->execute();
+    my @res=();
+    if(!$sth->err) {
+
+        while (my $row = $sth->fetchrow_hashref()) {
+            push(@res, $row);
+        }
+    }
+    else {
+        return $sth->errstr;
+    }
+    $sth->finish();
+    $self->connectDb()->disconnect();
+    return \@res;
+}
+
+sub update
+{
+    my ($self, $query)=@_;
+    my $sth = $self->connectDb()->prepare($query);
+    $sth->execute();
+    if (!$sth->err)
+    {
+        return 1;
+    }
+    else {
+        return $sth->errstr;
+    }
+    $sth->finish();
+    $self->connectDb()->disconnect();
+}
+
+sub insert
+{
+    my($self, $query)=@_;
+    my $sth=$self->connectDb()->prepare($query);
+    $sth->execute();
+    if (!$sth->err)
+    {
+        return 1;
+    }
+    else {
+        return $sth->errstr;
+    }
+    $sth->finish();
+    $self->connectDb()->disconnect();
+}
+
+sub delete
+{
+    my($self, $query)=@_;
+    my $sth=$self->connectDb()->prepare($query);
+    $sth->execute();
+    if (!$sth->err)
+    {
+        return 1;
+    }
+    else {
+        return $sth->errstr;
+    }
+    $sth->finish();
+    $self->connectDb()->disconnect();
+}
+#user6
 1;

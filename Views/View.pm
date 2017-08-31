@@ -8,6 +8,7 @@ use Data::Dumper;
 #sdelat proverku na file_exists and is_readable
 sub read($)
 {
+    
 	my ($self) = shift;
 	my $fileName = $_[0];
 	$self->{'html'} = $self->{'fh'}->readFile($fileName);
