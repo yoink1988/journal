@@ -12,7 +12,7 @@ ReadParse();
 
 sub run
 {
-  #	    print '<pre>'.Dumper(\%in).'</pre>';
+    #  print '<pre>'.Dumper(\%in).'</pre>';
 		
 		my ($self) = shift;
 		if($self->{'UModel'}->is_autorized())
@@ -23,6 +23,12 @@ sub run
 
 			if($req_meth eq 'POST')
 			{
+               my $postData = \%in; 
+           # print '<pre>'.Dumper($postData).'</pre>';
+               if($self->{'AModel'}->editArticle($postData))
+               {
+                print 'UPDATED';
+               } 
 				#EditArticleInDb;
 				$self->{'View'}->parseFormArticle({FORM_EditArticle => ''});
 			}
@@ -41,7 +47,7 @@ sub run
 					my %hash;
 					foreach my $val(@formValues)
 					{
-						%hash->{LANG_title} = $val->{'tittle'};
+						%hash->{LANG_title} = $val->{'title'};
 						%hash->{LANG_body} = $val->{'body'};
 						%hash->{LANG_id} = $val->{'id'};
 					}

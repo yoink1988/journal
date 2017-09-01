@@ -1,4 +1,6 @@
-#!d:/xampp/Dwimperl/perl/bin/perl.exe
+#!/usr/bin/perl
+
+###!d:/xampp/Dwimperl/perl/bin/perl.exe
 
 use strict;
 use warnings;
@@ -20,6 +22,7 @@ use Utils::Db;
 use Views::View;
 use Utils::Validate;
 use Controllers::Cabinet;
+use Controllers::Login;
 print "Content-type: text/html; charset=utf-8\n\n";
 #print '<pre>'.Dumper(\%in).'</pre>';
 #my $request = \%in;
@@ -27,6 +30,7 @@ print "Content-type: text/html; charset=utf-8\n\n";
 my $router = Utils::Router->new();
 my $page = $router->selectPage();
 
+print '<pre>'.Dumper(\%in).'</pre>';
 if($page eq 'home')
 {
 	my $db = Utils::Db->new;
@@ -74,6 +78,18 @@ if($page eq 'Cabinet')
 	$app->run();
 	print $app->{'View'}->getHtml();
 }
+if($page eq 'Login')
+{
+	my $db = Utils::Db->new;
+	my $AMod = Models::Article->new($db);
+	my $UMod = Models::User->new($db);
+	my $fh = Utils::File->new();
+	my $View = Views::View->new($fh);
+	my $app = Controllers::Login->new($UMod, $AMod, $View);
+	$app->run();
+	print $app->{'View'}->getHtml();
+}
+
 
 
 

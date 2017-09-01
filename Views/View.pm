@@ -88,7 +88,7 @@ sub LANG_articles
 	my %hash;
 	foreach my $value(@arr)
 	{
-		%hash->{LANG_title} = $value->{'tittle'};
+		%hash->{LANG_title} = $value->{'title'};
 		%hash->{LANG_date} = $value->{'date'};
 		%hash->{LANG_body} = $value->{'body'};
 		%hash->{LANG_author} = $value->{'author'};
@@ -107,7 +107,7 @@ sub LANG_UserArticles
 	my %hash;
 	foreach my $value(@arr)
 	{
-		%hash->{LANG_title} = $value->{'tittle'};
+		%hash->{LANG_title} = $value->{'title'};
 		%hash->{LANG_date} = $value->{'date'};
 		%hash->{LANG_body} = $value->{'body'};
 		%hash->{LANG_id} = $value->{'id'};

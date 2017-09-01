@@ -1,4 +1,4 @@
-package Controllers::Register;
+package Controllers::Login;
 
 use strict;
 use warnings;
@@ -34,11 +34,11 @@ sub run
 		{
 			if ($self->{'UModel'}->checkLogForm($postData))
 			{
-                if(!$self->{'UModel'}->isEmailExists($postData))
-				{
+                #if(!$self->{'UModel'}->isEmailExists($postData))
+                #{
 				#print 'Registriruem';
 					#$self->{'UModel'}->addUser($postData);
-				}
+                    #	}
 
 			}
 			else

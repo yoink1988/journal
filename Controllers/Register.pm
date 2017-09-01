@@ -32,14 +32,22 @@ sub run
 		{
 			if ($self->{'UModel'}->checkRegForm($postData))
 			{
+            
                 if(!$self->{'UModel'}->isEmailExists($postData))
-				{
-				#print 'Registriruem';
-					#$self->{'UModel'}->addUser($postData);
-				}
+                {
+					if($self->{'UModel'}->addUser($postData))
+                    {
+                        print 'Thank You bitch';
+                        #redirect logged
+                    }
+                    print 'Failed registred';
+                }
+                print 'Email is already exists';
 			}
 			else
 			{
+                print 'Proverte pravilnost zapolneniya';
+                $self->{'View'}->read('templates/regpage/regist.html'); 
                 #parsim placeholder;
 #				print 'Vivodim Formu s oshibkami';
 			}
