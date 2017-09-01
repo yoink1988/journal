@@ -47,7 +47,7 @@ sub makeFormEditArticle
 	return $pattern;	
 }
 
-sub parsePage()
+sub parsePage
 {
     my($self, @arr) = @_;
     $self->{'html'} =~ s/LANG_(\w)+/$self->$&(@arr)/gse;

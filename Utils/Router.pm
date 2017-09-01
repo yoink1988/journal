@@ -39,6 +39,10 @@ sub selectPage
 	{
 		$page = 'Cabinet';
 	}
+	if($page eq 'profile')
+	{
+		$page = 'Profile';
+	}
 
 	return $page;
 }

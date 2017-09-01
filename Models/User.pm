@@ -10,7 +10,7 @@ use Digest::MD5 qw(md5 md5_hex md5_base64);
 sub is_autorized
 {
     my $self = $_[0];
-    return 0;
+    return 1;
 }
 
 sub addUser
@@ -27,6 +27,14 @@ sub addUser
     }
     return 0;
 }
+
+sub checkUserEditForm
+{
+    my $self = $_[0];
+    return 1;
+
+}
+
 
 sub isEmailExists
 {
@@ -61,17 +69,11 @@ sub checkRegForm($)
     return 0;
 }
 
-# sub checkLogForm($)
-# {
-# my $self = shift;
-# my $data = shift;
-
-# if ($self->{'validator'}->valEmail($data->{'email'}) && $self->{'validator'}->valPass($data->{'password'}))
-# {
-# return 1;
-# }
-# return 0;
-# }
+ sub checkLogForm
+ {
+      my $self = shift;
+      return 1;
+ }
 
 
 sub new

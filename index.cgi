@@ -17,12 +17,13 @@ use Models::Article;
 use Models::User;
 use Controllers::Home;
 use Controllers::Register;
-use Controllers::Auth;
 use Utils::Db;
 use Views::View;
 use Utils::Validate;
 use Controllers::Cabinet;
 use Controllers::Login;
+use Controllers::Profile;
+
 print "Content-type: text/html; charset=utf-8\n\n";
 #print '<pre>'.Dumper(\%in).'</pre>';
 #my $request = \%in;
@@ -54,21 +55,8 @@ if($page eq 'Register')
 	$app->run();
 	print $app->{'View'}->getHtml();
 }
-if($page eq 'auth')
-{
-print 'AUTH_PAGE';
-	my $db = Utils::Db->new;
-	my $AMod = Models::Article->new($db);
-	my $UMod = Models::User->new($db);
-	my $fh = Utils::File->new();
-	my $View = Views::View->new($fh);
-	my $app = Controllers::Auth->new($UMod, $AMod, $View);
-	$app->run();
-	print $app->{'View'}->getHtml();
-}
 if($page eq 'Cabinet')
 {
-# print 'AUTH_PAGE';
 	my $db = Utils::Db->new;
 	my $AMod = Models::Article->new($db);
 	my $UMod = Models::User->new($db);
@@ -82,10 +70,23 @@ if($page eq 'Login')
 {
 	my $db = Utils::Db->new;
 	my $AMod = Models::Article->new($db);
-	my $UMod = Models::User->new($db);
+    my $Valid = Utils::Validate->new;
+	my $UMod = Models::User->new($db, $Valid);
 	my $fh = Utils::File->new();
 	my $View = Views::View->new($fh);
 	my $app = Controllers::Login->new($UMod, $AMod, $View);
+	$app->run();
+	print $app->{'View'}->getHtml();
+}
+if($page eq 'Profile')
+{
+	my $db = Utils::Db->new;
+    my $Valid = Utils::Validate->new;
+	my $AMod = Models::Article->new($db);
+	my $UMod = Models::User->new($db, $Valid);
+	my $fh = Utils::File->new();
+	my $View = Views::View->new($fh);
+	my $app = Controllers::Profile->new($UMod, $AMod, $View);
 	$app->run();
 	print $app->{'View'}->getHtml();
 }
