@@ -17,26 +17,29 @@ sub run
 	{
 		#redirect index.cgi
 	}
-	my $req_meth = %ENV->{'REQUEST_METHOD'};
 	
+	my $req_meth = %ENV->{'REQUEST_METHOD'};
+ #   print '<pre>'.Dumper(\%ENV).'</pre>';
+ #   print '<pre>'.Dumper(\%in).'</pre>';
+
 	if($req_meth eq 'GET')
 	{
-        $self->{'View'}->read('templates/regpage/regist.html'); 
+        $self->{'View'}->read('templates/login/login.html'); 
  	}
 	if($req_meth eq 'POST')
 	{
         my $postData = \%in;
 #       print '<pre>'.Dumper(\%in).'</pre>';
-        # print Dumper($postData);
-
+ #       print Dumper($postData);
 		{
-			if ($self->{'UModel'}->checkRegForm($postData))
+			if ($self->{'UModel'}->checkLogForm($postData))
 			{
                 if(!$self->{'UModel'}->isEmailExists($postData))
 				{
 				#print 'Registriruem';
 					#$self->{'UModel'}->addUser($postData);
 				}
+
 			}
 			else
 			{
