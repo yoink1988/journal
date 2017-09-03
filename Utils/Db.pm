@@ -13,9 +13,9 @@ sub new
 
 sub connectDb
 {
-    my $dsn ="DBI:mysql:user9";
-    my $user = "user9";
-    my $pass = "tuser9";
+    my $dsn ="DBI:mysql:journal";
+    my $user = "root";
+    my $pass = "";
     my $dbh = DBI->connect($dsn, $user, $pass)
         or die "Error connecting to DB!";
     return $dbh;

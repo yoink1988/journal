@@ -21,28 +21,24 @@ sub run
     my %warning;
 	my $req_meth = %ENV->{'REQUEST_METHOD'};
 
-	if($req_meth eq 'GET')
-	{
-        $self->{'View'}->read('templates/login/login.html');
-    }
     if($req_meth eq 'POST')
     {
-        my $postData = \%in;
-    {
-        if ($self->{'UModel'}->checkLogForm($postData))
-        {
-            print 'Welcome';
+		my $postData = \%in;
+		if ($self->{'UModel'}->checkLogForm($postData))
+		{
+			$self->{'UModel'}->logIn($postData);
+            
+			
             #redirect
-        }
-#			else
-#			{
-        my %warning->{LANG_warning} = 'Invalid user or password';
-#			}
-    }
-}
+		}
+		else
+		{
+			%warning->{LANG_warning} = 'Invalid user or password';
+		}
+	}
 
-$self->{'View'}->parse(\%warning);
-
+	$self->{'View'}->read('templates/login/login.html');
+	$self->{'View'}->parse(\%warning);
 
 }
 

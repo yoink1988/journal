@@ -24,12 +24,10 @@ sub run
 			if($req_meth eq 'POST')
 			{
                my $postData = \%in; 
-           # print '<pre>'.Dumper($postData).'</pre>';
                if($self->{'AModel'}->editArticle($postData))
                {
                 print 'UPDATED';
                } 
-				#EditArticleInDb;
 				$self->{'View'}->parseFormArticle({FORM_EditArticle => ''});
 			}
 			

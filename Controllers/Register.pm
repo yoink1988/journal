@@ -40,9 +40,15 @@ sub run
                         print 'Thank You bitch';
                         #redirect logged
                     }
-                    print 'Failed registred';
+					else
+					{
+						print 'Failed registred';
+					}
                 }
-                print 'Email is already exists';
+				else
+				{
+					print 'Email is already exists';
+				}
 			}
 			else
 			{
