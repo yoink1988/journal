@@ -27,9 +27,6 @@ sub run
 		if ($self->{'UModel'}->checkLogForm($postData))
 		{
 			$self->{'UModel'}->logIn($postData);
-            
-			
-            #redirect
 		}
 		else
 		{

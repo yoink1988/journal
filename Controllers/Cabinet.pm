@@ -17,6 +17,7 @@ sub run
 		my ($self) = shift;
 		if($self->{'UModel'}->is_autorized())
 		{
+			my $uId = $self->{'UModel'}->{'cgi'}->cookie('uId');
 			my $templateName = 'templates/cabinet/cabinet.html';
 			$self->{'View'}->read($templateName);
 			my $req_meth = %ENV->{'REQUEST_METHOD'};
@@ -31,8 +32,8 @@ sub run
 				$self->{'View'}->parseFormArticle({FORM_EditArticle => ''});
 			}
 			
-			if($req_meth eq 'GET')
-			{
+			# if($req_meth eq 'GET')
+			# {
 				my $id = %in->{'id'};
 				if($id eq undef)
 				{
@@ -50,15 +51,15 @@ sub run
 						%hash->{LANG_id} = $val->{'id'};
 					}
 					$self->{'View'}->parseFormArticle({FORM_EditArticle => $self->{'View'}->makeFormEditArticle(\%hash)});
-				}
+				# }
 			}
-		my $data = $self->{'AModel'}->getUserArticles(1);
-		my @data = @$data;	
-		$self->{'View'}->parsePage(@data);
+			my $data = $self->{'AModel'}->getUserArticles($uId);
+			my @data = @$data;	
+			$self->{'View'}->parsePage(@data);
 		}
 		else
 		{
-			#redirect home page
+			print $self->{'cgi'}->redirect(-url => 'index.cgi');
 		}
 }
 

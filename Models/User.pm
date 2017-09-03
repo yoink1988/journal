@@ -18,7 +18,7 @@ sub is_autorized
     if ($sid ne '')
     {
         my $sess = new CGI::Session(undef, $sid, {Directory=>'tmp'});
-        if ($sess->param('id') != 0)
+        if ($sess->param('uId') != 0)
         {
             return 1;
         }
@@ -40,11 +40,10 @@ sub logOut
     my $self = shift;
     my $sid = $self->{'cgi'}->cookie("SID");
     my $sess = new CGI::Session(undef, $sid, {Directory=>'tmp'});
-    $sess->param('id'=>0);
+    $sess->param('uId'=>0);
     $sess->param('name'=>'Guest');
-    # $sess->delete();
     $sess->flush();
-    $self->{'cgi'}->redirect(-url => 'index.cgi');
+    print $self->{'cgi'}->redirect(-url => 'index.cgi');
 }
 
 
@@ -61,12 +60,9 @@ sub logIn
         my $sid = $self->{'cgi'}->cookie("SID");
         my $sess = new CGI::Session(undef, $sid, {Directory=>'tmp'});
         $sess->param('name' => $uName);
-        $sess->param('id' => $uId);
-        return 1;
-    }
-    else{
-        return 0;
-    }
+        $sess->param('uId' => $uId);
+		print $self->{'cgi'}->redirect(-url => 'index.cgi');
+	}
 }
 
 

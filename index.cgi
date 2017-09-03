@@ -56,24 +56,28 @@ if($page eq 'Register')
 {
 	my $app = Controllers::Register->new($UMod, $AMod, $View);
 	$app->run();
+	print $app->{'Umodel'}->{'cgi'}->{'header'}."\n\n";
 	print $app->{'View'}->getHtml();
 }
 if($page eq 'Cabinet')
 {
 	my $app = Controllers::Cabinet->new($UMod, $AMod, $View);
 	$app->run();
+	print $app->{'Umodel'}->{'cgi'}->{'header'}."\n\n";
 	print $app->{'View'}->getHtml();
 }
 if($page eq 'Login')
 {
 	my $app = Controllers::Login->new($UMod, $AMod, $View);
 	$app->run();
+	print $app->{'Umodel'}->{'cgi'}->{'header'}."\n\n";
 	print $app->{'View'}->getHtml();
 }
 if($page eq 'Profile')
 {
 	my $app = Controllers::Profile->new($UMod, $AMod, $View);
 	$app->run();
+	print $app->{'Umodel'}->{'cgi'}->{'header'}."\n\n";
 	print $app->{'View'}->getHtml();
 }
 
