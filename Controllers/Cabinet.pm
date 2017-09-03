@@ -27,10 +27,11 @@ sub run
 				my %addArticle->{ADD_article} = $self->{'View'}->makeFormAddArticle();
 				$self->{'View'}->parseAddArticleForm(\%addArticle);
 			}
-			if (%in->{'action'} eq 'delete' && (%in->{'id'} ne undef))
+			if (%in->{'action'} eq 'delete' && (%in->{'id'} != undef))
 			{
 				$self->{'AModel'}->deleteArticle(%in->{'id'});
-				my %in->{'action'} = undef;
+				%in = undef;
+				print $self->{'UModel'}->{'cgi'}->redirect(-url => 'index.cgi?page=cabinet');
 			}
 			if($req_meth eq 'POST')
 			{
@@ -39,6 +40,8 @@ sub run
 					my $postData = \%in;
 
 					$self->{'AModel'}->addArticle($postData, $uId);
+					%in = undef;
+					print $self->{'UModel'}->{'cgi'}->redirect(-url => 'index.cgi?page=cabinet');
 				}
                 my $postData = \%in; 
 				$self->{'AModel'}->editArticle($postData);
@@ -72,7 +75,7 @@ sub run
 		}
 		else
 		{
-			print $self->{'cgi'}->redirect(-url => 'index.cgi');
+			print $self->{'UModel'}->{'cgi'}->redirect(-url => 'index.cgi');
 		}
 }
 
