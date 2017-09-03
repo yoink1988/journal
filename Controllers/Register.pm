@@ -15,51 +15,39 @@ sub run
     my ($self) = shift;
     if($self->{'UModel'}->is_autorized())
 	{
-		#redirect index.cgi
+		print $self->{'cgi'}->redirect(-url => 'index.cgi');
 	}
+	my %warning;
 	my $req_meth = %ENV->{'REQUEST_METHOD'};
-	
-	if($req_meth eq 'GET')
-	{
-        $self->{'View'}->read('templates/regpage/regist.html'); 
- 	}
+
 	if($req_meth eq 'POST')
 	{
-        my $postData = \%in;
-#       print '<pre>'.Dumper(\%in).'</pre>';
-        # print Dumper($postData);
 
-		{
+        my $postData = \%in;
+
 			if ($self->{'UModel'}->checkRegForm($postData))
 			{
             
-                if(!$self->{'UModel'}->isEmailExists($postData))
+                if(!$self->{'UModel'}->isEmailExists($postData->{'email'}))
                 {
 					if($self->{'UModel'}->addUser($postData))
                     {
-                        print 'Thank You bitch';
-                        #redirect logged
-                    }
-					else
-					{
-						print 'Failed registred';
+						%warning->{LANG_warning} = 'Thank You bitch, idi na <a href="index.cgi?page=login">Login</a>';
 					}
                 }
 				else
 				{
-					print 'Email is already exists';
+					%warning->{LANG_warning} = 'Email is already exists';
 				}
 			}
 			else
 			{
-                print 'Proverte pravilnost zapolneniya';
-                $self->{'View'}->read('templates/regpage/regist.html'); 
-                #parsim placeholder;
-#				print 'Vivodim Formu s oshibkami';
+				%warning->{LANG_warning} = 'Incorrect input';
 			}
-		}
 	}
-
+	
+    $self->{'View'}->read('templates/regpage/regist.html');
+	$self->{'View'}->parse(\%warning);
 }
 
 sub new

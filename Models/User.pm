@@ -83,18 +83,67 @@ sub addUser
 
 sub checkUserEditForm
 {
-    my $self = $_[0];
-    return 1;
+
+    my $self = shift;
+    my $data = shift;
+    if ($self->{'validator'}->valName($data->{'name'}) && $self->{'validator'}->valPass($data->{'password'}))
+    {
+        return 1;
+    }
+    return 0;
 
 }
 
+sub editName
+{
+	my $self=shift;
+    my $name=shift;
+	my $uId = shift;
+    my $query = 'UPDATE users SET name=\''.$name.'\' WHERE id=\''.$uId.'\'';
+    if ($self->{'Db'}->update($query))
+    {
+        return 1;
+    }
+	return 0;
+}
 
+sub editPass
+{
+	my $self=shift;
+	my $pass =shift;
+	my $uId = shift;
+	my $pass = md5_hex($pass);
+    my $query = 'UPDATE users SET  pass=\''.$pass.'\' WHERE id=\''.$uId.'\'';
+    if ($self->{'Db'}->update($query))
+    {
+        return 1;
+    }
+	return 0;
+}
+
+
+# sub isEmailExists
+# {
+    # my ($self, $email) = @_;
+    # my $query = 'SELECT email FROM users WHERE email=\''.$email.'\'';
+    # my $resEmail = $self->{'Db'}->select($query);
+	# print "Content-type: text/html; charset=utf-8\n\n";
+	# print '<pre>'.Dumper($resEmail).'</pre>';
+    # if ($resEmail->[0]->{'email'} ne '');
+	# return 1;
+    # {
+
+        # return 1;
+    # }
+        # return 0;
+
+# }
 sub isEmailExists
 {
     my ($self, $email) = @_;
     my $query = 'SELECT email FROM users WHERE email=\''.$email.'\'';
     my $resEmail = $self->{'Db'}->select($query);
-    if ($resEmail->['email'] ne '')
+    if ($resEmail->[0]->{'email'} ne '')
     {
 
         return 1;
@@ -103,10 +152,7 @@ sub isEmailExists
     {
         return 0;
     }
-
 }
-
-
 sub checkRegForm($)
 {
     my $self = shift;
@@ -142,7 +188,7 @@ sub new
 {
     my $class = ref($_[0])||$_[0];
 
-    my $cgi = CGI->new();
+    my $cgi = CGI->new;
     my $sid = $cgi->cookie("SID");
     if ($sid ne '')
     {
@@ -155,7 +201,7 @@ sub new
             or die CGI::Session->errstr();
         $sess->name('SID');
         my $cookie = $cgi->cookie(SID => $sess->id);
-        $cgi->header( -cookie=>$cookie );
+        print $cgi->header( -cookie=>$cookie );
     }
 
 
