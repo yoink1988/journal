@@ -28,6 +28,37 @@ sub getArticleById
     return $self->{'Db'}->select($query);
 }
 
+sub addArticle
+{
+    my $self = shift;
+    my $data = shift;
+    my $uId = shift;
+    my $query = 'INSERT INTO articles (id_author, title, body) VALUES (\''.$uId.'\', \''.$data->{'title'}.'\', \''.$data->{'body'}.'\')';
+    if ($self->{'Db'}->insert($query) == 1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+sub deleteArticle
+{
+    my $self = shift;
+    my $aId = shift;
+    my $query = 'DELETE FROM articles WHERE id='.$aId;
+    if ($self->{'Db'}->delete($query))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 sub editArticle
 {

@@ -122,22 +122,6 @@ sub editPass
 }
 
 
-# sub isEmailExists
-# {
-    # my ($self, $email) = @_;
-    # my $query = 'SELECT email FROM users WHERE email=\''.$email.'\'';
-    # my $resEmail = $self->{'Db'}->select($query);
-	# print "Content-type: text/html; charset=utf-8\n\n";
-	# print '<pre>'.Dumper($resEmail).'</pre>';
-    # if ($resEmail->[0]->{'email'} ne '');
-	# return 1;
-    # {
-
-        # return 1;
-    # }
-        # return 0;
-
-# }
 sub isEmailExists
 {
     my ($self, $email) = @_;

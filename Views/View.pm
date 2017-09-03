@@ -37,6 +37,12 @@ sub getHtml
 	
 }
 
+sub parseAddArticleForm
+{
+	my ($self) = shift;
+	my $hash = $_[0];
+	$self->{'html'}=~ s/ADD_(\w)+/$hash->{$&}/gse;
+}
 
 sub makeFormEditArticle
 {
@@ -46,6 +52,14 @@ sub makeFormEditArticle
 	$pattern =~ s/LANG_(\w)+/$hash->{$&}/gse;
 	return $pattern;	
 }
+
+sub makeFormAddArticle
+{
+	my ($self) = shift;
+	my $pattern = $self->{'fh'}->readFile('templates/cabinet/addarticle.html');
+	return $pattern;	
+}
+
 
 sub parsePage
 {
