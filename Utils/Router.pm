@@ -10,15 +10,16 @@ use vars qw(%in);
 $|=1;
 ReadParse();
 
+#almost useless package
+#just choosing a $page value for yet
+#
 
 
 sub selectPage
 {
 	my ($self) = shift;
- #	print Dumper( %ENV->{'REQUEST_METHOD'});   
- #   print '<pre>'.Dumper(\%in).'</pre>';
-    my $page = %in->{'page'};
 
+    my $page = %in->{'page'};
 	if($page eq undef) 
 	{
 		$page = 'home';
@@ -50,7 +51,6 @@ sub selectPage
 sub new
 {
     my $class = ref($_[0])||$_[0];
-	
     return bless {}; $class;
 }
 1;

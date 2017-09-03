@@ -10,7 +10,18 @@ use lib dirname(__FILE__).'/../Utils/';
 use Utils::CGI::Session;
 
 
+#
+#returns headers from CGI object
+sub getHeader
+{
+	my $self = shift;
+	return $self->{'cgi'}->{'header'};
+}
 
+#
+#checks if the sessionID cookie exists,
+#checks the uId in relevant session
+#returns true if uId is not NULL
 sub is_autorized
 {
     my $self = shift;
@@ -32,21 +43,48 @@ sub is_autorized
     }
 }
 
+#
+#redirects to home page 
+sub redirectToHome
+{
+	my $self = shift;
+	print $self->{'cgi'}->redirect(-url => 'index.cgi');
+}
 
+#recieving an URL string
+#and redirects to it
+sub redirectTo
+{
+	my $self = shift;
+	my $destination = shift;
+	print $self->{'cgi'}->redirect(-url => $destination);
+}
 
-
+#LogOuting User
+#
+#
 sub logOut
 {
     my $self = shift;
-    my $sid = $self->{'cgi'}->cookie("SID");
+    #my $sid = $self->{'cgi'}->cookie("SID");
+	my $sid = $self->getSessCookie();
     my $sess = new CGI::Session(undef, $sid, {Directory=>'tmp'});
     $sess->param('uId'=>0);
     $sess->param('name'=>'Guest');
     $sess->flush();
-    print $self->{'cgi'}->redirect(-url => 'index.cgi');
 }
 
+#returns CGI sessIdCookie
+#
+sub getSessCookie
+{
+	my $self = shift;
+	return $self->{'cgi'}->cookie("SID");
+}
 
+#gets user name, id from db
+#sets it to the session parametres
+#
 sub logIn
 {
     my $self = shift;
@@ -56,16 +94,19 @@ sub logIn
     {
         my $data = $self->{'Db'}->select($query);
         my $uId = $data->[0]->{'id'};
-        my $uName = $data->[0]->{'name'};
-        my $sid = $self->{'cgi'}->cookie("SID");
+        my $uName = $data->[0]->{'name'};		
+        #my $sid = $self->{'cgi'}->cookie("SID");
+		my $sid = $self->getSessCookie();
         my $sess = new CGI::Session(undef, $sid, {Directory=>'tmp'});
         $sess->param('name' => $uName);
         $sess->param('uId' => $uId);
-		print $self->{'cgi'}->redirect(-url => 'index.cgi');
 	}
 }
 
-
+#recieving link to POST data hash
+#makes md5 hashing on password input
+#adds user to db
+#perhaps should be a several functions for this action
 sub addUser
 {
     my $self = shift;
@@ -81,9 +122,11 @@ sub addUser
     return 0;
 }
 
+#recieving link to POST data hash
+#checks input with validator methods
+#
 sub checkUserEditForm
 {
-
     my $self = shift;
     my $data = shift;
     if ($self->{'validator'}->valName($data->{'name'}) && $self->{'validator'}->valPass($data->{'password'}))
@@ -94,6 +137,9 @@ sub checkUserEditForm
 
 }
 
+#
+#recieving input Name, User Id
+#updates user name in db
 sub editName
 {
 	my $self=shift;
@@ -107,6 +153,9 @@ sub editName
 	return 0;
 }
 
+#
+#recieving input password, User Id
+#updates user password in db
 sub editPass
 {
 	my $self=shift;
@@ -121,7 +170,10 @@ sub editPass
 	return 0;
 }
 
-
+#
+#recieving an email input field
+#check in db if this email already exists
+#
 sub isEmailExists
 {
     my ($self, $email) = @_;
@@ -137,6 +189,11 @@ sub isEmailExists
         return 0;
     }
 }
+
+
+#
+#recieving input post data
+#check fields with validator methods
 sub checkRegForm($)
 {
     my $self = shift;
@@ -148,6 +205,10 @@ sub checkRegForm($)
     return 0;
 }
 
+#
+#recieving post data
+#checks email in db, if exists checks password to accept
+#check fields with validator methods
 sub checkLogForm
 {
     my $self = shift;
@@ -167,7 +228,9 @@ sub checkLogForm
 
 }
 
-
+#__construct
+#
+#
 sub new
 {
     my $class = ref($_[0])||$_[0];
@@ -191,13 +254,4 @@ sub new
 
     return bless {'Db'=> $_[1],'validator'=> $_[2], 'cgi'=> $cgi}; $class;
 }
-
-# sub new
-# {
-    # my $class = ref($_[0])||$_[0];
-	
-	
-	# my $sess = new CGI::Session("driver:file", undef, {Directory=>'tmp'});
-    # return bless {'Db'=> $_[1],'validator'=> $_[2],'cgi' => $_[3]}, 'sess' => $sess; $class;
-# }
 1;

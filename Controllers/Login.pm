@@ -10,15 +10,24 @@ $|=1;
 ReadParse();
 
 
+#returns rendered html with headers 
+#
+sub display
+{
+	my ($self) = shift;
+	return $self->{'UModel'}->getHeader()."\n\n".$self->{'View'}->getHtml();
+}
+
+#main logic function
+#
 sub run
 {
     my ($self) = shift;
     if($self->{'UModel'}->is_autorized())
 	{
-		#redirect index.cgi
+		$self->{'UModel'}->redirectToHome();
 	}
-	
-    my %warning;
+	my %warning;
 	my $req_meth = %ENV->{'REQUEST_METHOD'};
 
     if($req_meth eq 'POST')
@@ -27,6 +36,7 @@ sub run
 		if ($self->{'UModel'}->checkLogForm($postData))
 		{
 			$self->{'UModel'}->logIn($postData);
+			$self->{'UModel'}->redirectToHome();
 		}
 		else
 		{
@@ -39,6 +49,8 @@ sub run
 
 }
 
+#__construct
+#recives an UserModel, ArticlesModel, View objects
 sub new
 {
     my $class = ref($_[0])||$_[0];

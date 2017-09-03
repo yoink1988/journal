@@ -10,15 +10,11 @@ use vars qw(%in);
 $|=1;
 ReadParse();
 
-
+#main logic function
+#
 sub run
 {
-
 	my ($self) = shift; 
-# print "Content-type: text/html; charset=utf-8\n\n";
-# print '<pre>'.Dumper(%in->{'action'}).'</pre>';
-
-	
 	my $action = %in->{'action'};
 
 	my %buttons;
@@ -27,6 +23,7 @@ sub run
 		if ($action eq 'logout')
 		{
 			$self->{'UModel'}->logOut();
+			$self->{'UModel'}->redirectToHome();
 		}
 		%buttons->{'BUTT_showCabinetButton'} = $self->{'View'}->makeButton({'LANG_destination'=>'index.cgi?page=cabinet',
 																				  'LANG_text' => 'Cabinet'});
@@ -46,10 +43,18 @@ sub run
 	$self->{'View'}->parseButtons(\%buttons);
 	my @data = @$data;
 	$self->{'View'}->parsePage(@data);
-	
 }
 
+#returns rendered html with headers 
+#
+sub display
+{
+	my ($self) = shift;
+	return $self->{'UModel'}->getHeader()."\n\n".$self->{'View'}->getHtml();
+}
 
+#__construct
+#recives an UserModel, ArticlesModel, View objects
 sub new
 {
     my $class = ref($_[0])||$_[0];

@@ -4,7 +4,9 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-
+#
+#gets all articles from db
+#
 sub getArticles
 {
     my ($self) = shift;
@@ -12,22 +14,30 @@ sub getArticles
     return $self->{'Db'}->select($query);
 }
 
+#
+#
+#gets articles by user ID
 sub getUserArticles
 {
-    #\@arr getUserArticles($idUser)
     my ($self, $idUser) = @_;
     my $query = 'SELECT id, title, body, date FROM articles WHERE id_author=\''.$idUser.'\'';
     return $self->{'Db'}->select($query);
 }
 
+
+#
+#
+#gets article by Id
 sub getArticleById
 {
-    #\@arr getArticleById($artId)
     my ($self, $artId) = @_;
     my $query = 'SELECT id, title, body FROM articles WHERE id=\''.$artId.'\'';
     return $self->{'Db'}->select($query);
 }
 
+#
+#
+#adds an article to db
 sub addArticle
 {
     my $self = shift;
@@ -44,7 +54,9 @@ sub addArticle
     }
 }
 
-
+#
+#
+#delete an article by Id
 sub deleteArticle
 {
     my $self = shift;
@@ -60,6 +72,9 @@ sub deleteArticle
     }
 }
 
+#
+#
+#edits an article by Id
 sub editArticle
 {
     my $self = shift;
@@ -78,11 +93,12 @@ sub editArticle
 
 
 
-
+#__construct
+#recives an Db object
+#
 sub new
 {
     my $class = ref($_[0])||$_[0];
-
     return bless {'Db' => $_[1]}; $class;
 }
 1;
