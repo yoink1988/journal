@@ -10,13 +10,7 @@ use lib dirname(__FILE__).'/../Utils/';
 use Utils::CGI::Session;
 
 
-#
-#returns headers from CGI object
-sub getHeader
-{
-	my $self = shift;
-	return $self->{'cgi'}->{'header'};
-}
+
 
 #
 #checks if the sessionID cookie exists,
@@ -228,6 +222,16 @@ sub checkLogForm
 
 }
 
+
+#returns headers from CGI object
+# sub getHeader
+sub printHeads
+{
+	my $self = shift;
+	my $cookie = $self->{'cgi'}->cookie(SID => $self->{'cgi'}->{'sid'});
+	return $self->{'cgi'}->header(-type=> 'text/html', -charset=>'utf-8', -cookie=>$cookie);
+}
+
 #__construct
 #
 #
@@ -237,20 +241,20 @@ sub new
 
     my $cgi = CGI->new;
     my $sid = $cgi->cookie("SID");
+	my $cookie;
+
     if ($sid ne '')
     {
         my $sess = new CGI::Session(undef, $sid, {Directory=>'tmp'});
-        $cgi->header(-type=> 'text/html', -charset=>'utf-8');
+		$cgi->{'sid'} = $sess->id;
     }
     else
     {
         my $sess = CGI::Session->new("driver:file", undef, {Directory=>'tmp'})
             or die CGI::Session->errstr();
         $sess->name('SID');
-        my $cookie = $cgi->cookie(SID => $sess->id);
-        print $cgi->header( -cookie=>$cookie );
+		$cgi->{'sid'} = $sess->id;
     }
-
 
     return bless {'Db'=> $_[1],'validator'=> $_[2], 'cgi'=> $cgi}; $class;
 }

@@ -42,7 +42,21 @@ if($page eq 'home')
 {
 	my $app = Controllers::Home->new($UMod, $AMod, $View);
 	$app->run();
-	print $app->display();
+	 # my $h = $app->{'UModel'}->{'cgi'}->header;
+	  # print "Content-type: text/html\n\n";
+	 # print $h;
+	 # print $h;
+	 #print Dumper($app->{'UModel'}->getHeader());
+	# print $app->{'UModel'}->{'cgi'}->{'header'};
+	
+	# print $app->{'UModel'}->printHeads();
+	   print $app->display();
+	   
+	   # print $app->{'UModel'}->printHeads();
+	    # print $h;
+	   # print $app->{'UModel'}->{'cgi'}->cookie("SID");
+	 # print Dumper($app->{'UModel'}->{'cgi'});
+	 # print Dumper($app->{'UModel'}->{'cgi'}->{'header'})
 }
 if($page eq 'Register')
 {
